@@ -1,0 +1,78 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+struct Guest {
+    string name;
+    string address;
+    string phone;
+};
+
+void addGuest() {
+    ofstream outFile("guests.txt", ios::app);
+
+    Guest guest;
+    cout << "Enter guest name: ";
+    cin.ignore();
+    getline(cin, guest.name);
+    cout << "Enter guest address: ";
+    getline(cin, guest.address);
+    cout << "Enter guest phone number: ";
+    getline(cin, guest.phone);
+
+    outFile << guest.name << endl;
+    outFile << guest.address << endl;
+    outFile << guest.phone << endl;
+
+    outFile.close();
+    cout << "Guest information added successfully." << endl;
+}
+
+void viewGuests() {
+    ifstream inFile("guests.txt");
+
+    if (!inFile) {
+        cout << "File not found or empty. No guest information available." << endl;
+        return;
+    }
+
+    string line;
+    int lineNumber = 1;
+
+    while (getline(inFile, line)) {
+        cout << lineNumber << ": " << line << endl;
+        lineNumber++;
+    }
+
+    inFile.close();
+}
+
+int main() {
+    int choice;
+
+    while (true) {
+        cout << "\nHotel Management System" << endl;
+        cout << "1. Add Guest" << endl;
+        cout << "2. View Guests" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                addGuest();
+                break;
+            case 2:
+                viewGuests();
+                break;
+            case 3:
+                cout << "Exiting the program." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
